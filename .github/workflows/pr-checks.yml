@@ -1,0 +1,30 @@
+name: PR Checks
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint & format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Backend
+        working-directory: backend
+        run: |
+          npm install
+          npm run lint --if-present
+          npm run format:check --if-present
+
+      - name: Frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run lint --if-present
+          npm run typecheck --if-present
+          npm run format:check --if-present

@@ -1,0 +1,41 @@
+* { box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; margin: 0; background: #fef9f3; color: #222; }
+.app { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 2px solid #f4c430; }
+header h1 a { text-decoration: none; color: #222; }
+nav a { margin-left: 1rem; color: #333; text-decoration: none; font-weight: 500; }
+nav a:hover { color: #e76f51; }
+.cart-badge { background: #e76f51; color: white; border-radius: 10px; padding: 2px 8px; font-size: 0.85em; margin-left: 4px; }
+main { padding: 1rem 0; min-height: 70vh; }
+footer { text-align: center; padding: 1rem; color: #888; border-top: 1px solid #ddd; margin-top: 2rem; }
+
+.categories { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+.categories button { padding: 6px 14px; border: 1px solid #ccc; background: white; border-radius: 20px; cursor: pointer; text-transform: capitalize; }
+.categories button.active { background: #f4c430; border-color: #f4c430; font-weight: 600; }
+
+.emoji-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+.emoji-card { background: white; border: 1px solid #eee; border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.emoji-card .symbol { font-size: 3rem; }
+.emoji-card .name { font-weight: 500; margin: 0.5rem 0 0.25rem; }
+.emoji-card .price { color: #e76f51; font-weight: 600; }
+.emoji-card .stock { font-size: 0.8rem; color: #888; margin-bottom: 0.5rem; }
+.emoji-card button { width: 100%; padding: 6px; border: none; background: #264653; color: white; border-radius: 6px; cursor: pointer; }
+.emoji-card button:disabled { background: #aaa; cursor: not-allowed; }
+
+.cart table { width: 100%; border-collapse: collapse; background: white; }
+.cart th, .cart td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; }
+.cart .symbol { font-size: 1.5rem; }
+.cart input[type="number"] { width: 60px; padding: 4px; }
+.summary { margin-top: 1rem; }
+.discount { color: #2a9d8f; font-weight: 600; }
+.checkout-btn, .pay-btn { display: inline-block; padding: 10px 20px; background: #e76f51; color: white; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; font-weight: 600; }
+.checkout-btn:hover, .pay-btn:hover { background: #d65c3a; }
+
+.checkout form input { display: block; margin: 0.5rem 0; padding: 8px; width: 300px; }
+.checkout .customer-info { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+
+.error { color: #c0392b; }
+.success { color: #2a9d8f; }
+.orders ul { list-style: none; padding: 0; }
+.orders li { padding: 8px; background: white; margin-bottom: 6px; border-radius: 6px; }
+.order-detail ul { list-style: none; padding: 0; }

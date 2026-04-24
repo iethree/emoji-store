@@ -1,0 +1,57 @@
+name: E2E
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  cypress:
+    name: Cypress
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Start stack
+        run: docker compose up -d --build
+
+      - name: Wait for services
+        run: sleep 30
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm install
+
+      - name: Run Cypress
+        working-directory: frontend
+        env:
+          CYPRESS_RETRIES: '2'
+          CYPRESS_BASE_URL: http://localhost:5173
+        run: npx cypress run --spec "cypress/e2e/smoke.cy.js"
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos
+          if-no-files-found: ignore
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
