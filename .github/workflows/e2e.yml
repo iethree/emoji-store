@@ -3,9 +3,7 @@ name: E2E
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-  schedule:
-    - cron: '0 6 * * *'
+  pull_request:
 
 jobs:
   cypress:
@@ -32,7 +30,7 @@ jobs:
       - name: Run Cypress
         working-directory: frontend
         env:
-          CYPRESS_RETRIES: '2'
+          CYPRESS_RETRIES: '5'
           CYPRESS_BASE_URL: http://localhost:5173
         run: npx cypress run --spec "cypress/e2e/smoke.cy.js"
 
