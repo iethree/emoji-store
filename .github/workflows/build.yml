@@ -1,0 +1,55 @@
+name: Build & Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build production images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: true
+          tags: ghcr.io/${{ github.repository }}/backend:latest
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: true
+          tags: ghcr.io/${{ github.repository }}/frontend:latest
+
+      - name: Scan backend image
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/backend:latest
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+
+      - name: Scan frontend image
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/frontend:latest
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
